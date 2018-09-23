@@ -71,10 +71,10 @@ var Ship = Polygon.extend({
 			this.angleshift *= Math.floor(Math.random() * 2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
 
 			// ammo
-			this.ammo = 200;
+			this.ammo = 100;
 			
 			// max ammo AKA maxammo
-			this.maxammo = 200;
+			this.maxammo = 100;
 
 		},
 

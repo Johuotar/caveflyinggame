@@ -70,15 +70,12 @@ var GameState = State.extend({
 			// calculate the number of asteroid to create
 			var num = Math.round(10 * Math.atan(this.lvl / 25)) + 10;
 			
-			// calculate the number of walls to create
-			var num2 = Math.round(10 * Math.atan(this.lvl / 25)) + 1;
-
 			// set ship position
 			this.ship.x = this.canvasWidth / 2;
 			this.ship.y = this.canvasHeight / 2;
 			this.ship.rotate(-Math.PI / 2);
 			
-			this.ship.ammo = 200;
+			this.ship.ammo = this.ship.maxammo;
 			this.ship.hp = this.ship.maxhp;
 
 			// init bullet array
@@ -96,6 +93,9 @@ var GameState = State.extend({
 			// dynamically create asteroids and push to array
 			this.asteroids = [];
 			
+			// calculate the number of walls to create
+			//var num2 = Math.round(10 * Math.atan(this.lvl / 25)) + 1;
+			
 			for (var i = 0; i < num; i++) {
 				// choose asteroid polygon randomly
 				var n = Math.round(Math.random() * (Points.ASTEROIDS.length - 1));
@@ -105,10 +105,10 @@ var GameState = State.extend({
 				y = 0;
 				if (Math.random() > 0.5) {
 					y = Math.random() * this.canvasHeight;
-					x = this.canvasWidth - 30
+					x = this.canvasWidth - 200
 				} else {
 					y = Math.random() * this.canvasHeight;
-					x = 30
+					x = 200
 				}
 				// actual creating of asteroid
 				var astr = new Asteroid(Points.ASTEROIDS[n], AsteroidSize, x, y);
@@ -151,12 +151,9 @@ var GameState = State.extend({
 			x = this.canvasWidth / 2;
 			y = this.canvasHeight / 2;
 			
-			var currentlevel = 0;//TODO: make more than 2 maps
-			if (Math.random() > 0.5) {
-				currentlevel = 1;
-			}
+			// TODO: make more than 3 maps
 			// actual creating of map
-			var map = new Wall(Points.MAPS[currentlevel], 20, x, y);
+			var map = new Wall(Points.MAPS[this.lvl], 20, x, y);
 			map.maxX = this.canvasWidth;
 			map.maxY = this.canvasHeight;
 			console.log(x, y);
@@ -164,7 +161,7 @@ var GameState = State.extend({
 			this.walls.push(map);
 			
 			//create a container
-			var container = new Container(Points.CRATE, 6, this.canvasWidth / 2 + 800, this.canvasHeight / 2 + 120);
+			var container = new Container(Points.CRATE, 6, this.canvasWidth / 2 + 800, this.canvasHeight / 2 + 70);
 			container.maxX = this.canvasWidth;
 			container.maxY = this.canvasHeight;
 			//push to containers array which holds containers
