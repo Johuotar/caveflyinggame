@@ -68,7 +68,7 @@ var GameState = State.extend({
 		 */
 		generateLvl: function () {
 			// calculate the number of asteroid to create
-			var num = Math.round(10 * Math.atan(this.lvl / 25)) + 3;
+			var num = Math.round(10 * Math.atan(this.lvl / 25)) + 10;
 			
 			// calculate the number of walls to create
 			var num2 = Math.round(10 * Math.atan(this.lvl / 25)) + 1;
@@ -89,7 +89,10 @@ var GameState = State.extend({
 			
 			// init container array
 			this.containers = [];
-
+			
+			// init depots array
+			this.depots = [];
+			
 			// dynamically create asteroids and push to array
 			this.asteroids = [];
 			
@@ -101,9 +104,11 @@ var GameState = State.extend({
 				var x = 0,
 				y = 0;
 				if (Math.random() > 0.5) {
-					x = Math.random() * this.canvasWidth;
+					y = Math.random() * this.canvasHeight;
+					x = this.canvasWidth - 30
 				} else {
 					y = Math.random() * this.canvasHeight;
+					x = 30
 				}
 				// actual creating of asteroid
 				var astr = new Asteroid(Points.ASTEROIDS[n], AsteroidSize, x, y);
@@ -159,12 +164,17 @@ var GameState = State.extend({
 			this.walls.push(map);
 			
 			//create a container
-			var container = new Container(Points.CRATE, 6, this.canvasWidth / 2 + 180, this.canvasHeight / 2 + 120);
+			var container = new Container(Points.CRATE, 6, this.canvasWidth / 2 + 800, this.canvasHeight / 2 + 120);
 			container.maxX = this.canvasWidth;
 			container.maxY = this.canvasHeight;
-			console.log("container at" + x, y)
 			//push to containers array which holds containers
 			this.containers.push(container);
+			
+			//create a depot
+			var depot = new Depot(Points.DEPOT, 8, this.canvasWidth / 2 - 400, this.canvasHeight / 2 + 400);
+			console.log("depot at" + this.canvasWidth / 2, this.canvasHeight / 2)
+			//push to depots array which holds depots
+			this.depots.push(depot);
 			
 		},
 
@@ -382,6 +392,28 @@ var GameState = State.extend({
 				p.update();
 			}
 			
+			// iterate thru and update all depots
+			for (var i = 0, len = this.depots.length; i < len; i++) {
+				var d = this.depots[i];
+				//d.update(); // depots do nothing at update for now 23.9.2018
+				
+				// check if container is at depot
+				for (var j = 0, len = this.containers.length; j < len; j++) {
+					var b = this.containers[j];
+					if (b.collide(d)) {
+						b.vel = { // place container to depot
+							x: b.vel.x * 0,
+							y: b.vel.y * 0
+						}
+						b.x = d.x; // TODO: fix container falling down, not colliding with depot
+						b.y = d.y; 
+						this.lvl++;
+						this.generateLvl();
+						
+					}
+				}
+			}
+			
 			// update ship
 			this.ship.update();
 
@@ -532,6 +564,10 @@ var GameState = State.extend({
 			ctx.strokeStyle = 'yellow';
 			for (var i = 0, len = this.containers.length; i < len; i++) {
 				this.containers[i].draw(ctx);
+			}
+			// draw all depots
+			for (var i = 0, len = this.depots.length; i < len; i++) {
+				this.depots[i].draw(ctx);
 			}
 			
 			ctx.restore();
