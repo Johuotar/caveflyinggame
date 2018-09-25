@@ -161,7 +161,7 @@ var GameState = State.extend({
 			this.walls.push(map);
 			
 			//create a container
-			var container = new Container(Points.CRATE, 6, this.canvasWidth / 2 + 800, this.canvasHeight / 2 + 70);
+			var container = new Container(Points.CRATE, 6, this.canvasWidth / 2 + 800, this.canvasHeight / 2);
 			container.maxX = this.canvasWidth;
 			container.maxY = this.canvasHeight;
 			//push to containers array which holds containers
@@ -457,8 +457,6 @@ var GameState = State.extend({
 						}
 						b.x += b.vel.x * 2;
 						b.y += b.vel.y * 2;
-						//j--;
-						//i--;
 					}
 				}
 
@@ -474,7 +472,6 @@ var GameState = State.extend({
 						this.bullets.splice(j, 1);
 						len--;
 						j--;
-						i--;
 					}
 				}
 				
