@@ -54,10 +54,11 @@ var Ship = Polygon.extend({
 			
 			// tractorbeam
 			this.tractorbeamLength = 80;
+			this.carryingObject = false;
 
 			// gravity and weight of carried object
 			this.gravity = 0.015;
-			this.weight = 0.0;
+			this.weight = 0.030;
 
 			//cooldown
 			this.fireSpeed = 20;
@@ -118,14 +119,11 @@ var Ship = Polygon.extend({
 				// don't test if not visible or if the object no longer exists, bullet destroyed it etc
 				if (!this.visible || obj == null) {
 					console.log("Tractor beam func beam returned false because testable object was null or ship was not visible.");
-					this.weight = 0.0;
 					return false;
 				}
 				if (obj.hasPoint(this.x , this.y + this.tractorbeamLength)) {
-					this.weight = 0.030;
 					return obj;
 				}
-				this.weight = 0.0;
 			}
 			return false;
 		},
@@ -197,9 +195,14 @@ var Ship = Polygon.extend({
 			this.vel.x *= 0.99;
 			this.vel.y *= 0.99;
 
-			//ship falls by its gravity
+			//ship falls by its gravity and weight of carried object
 			if (this.visible) {
-				this.vel.y += this.gravity + this.weight;
+				if (this.carryingObject) {
+					this.vel.y += this.gravity + this.weight;
+				}
+				else {
+					this.vel.y += this.gravity;
+				}
 			}
 
 			/*

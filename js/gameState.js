@@ -300,8 +300,12 @@ var GameState = State.extend({
 				}
 				// if tractorbeam collides with container
 				if (this.ship.tractorbeam(a) && this.ship.drawTractorbeam == true) {
+					this.ship.carryingObject = true;
 					a.vel.x = this.ship.vel.x;
 					a.vel.y = this.ship.vel.y;
+				}
+				else {
+					this.ship.carryingObject = false;
 				}
 			
 			// iterate thru and update all asteroids
@@ -318,7 +322,8 @@ var GameState = State.extend({
 					}
 				}
 				// if tractorbeam collides with asteroid
-				if (this.ship.tractorbeam(a) && this.ship.drawTractorbeam == true) {
+				if (this.ship.tractorbeam(a) && this.ship.drawTractorbeam == true && this.ship.carryingObject == false) {
+					this.ship.carryingObject = true;
 					a.vel.x = this.ship.vel.x;
 					a.vel.y = this.ship.vel.y;
 				}
