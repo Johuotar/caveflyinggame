@@ -63,8 +63,8 @@ var Container = Polygon.extend({
 			this.x += this.vel.x;
 			this.y += this.vel.y;
 			
-			this.vel.x *= 0.99;
-			this.vel.y *= 0.99;
+			this.vel.x *= 0.995;
+			this.vel.y *= 0.995;
 
 			// falls by its gravity
 			this.vel.y += this.gravity;

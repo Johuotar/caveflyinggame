@@ -52,6 +52,12 @@ var Ship = Polygon.extend({
 			// max hitpoints AKA maxhp
 			this.maxhp = 50;
 			
+			// fuel
+			this.fuel = 60.0;
+
+			// max fuel
+			this.maxfuel = 60.0;
+			
 			// tractorbeam
 			this.tractorbeamLength = 80;
 			this.carryingObject = false;
@@ -61,11 +67,11 @@ var Ship = Polygon.extend({
 			this.weight = 0.030;
 
 			//cooldown
-			this.fireSpeed = 20;
+			this.fireSpeed = 30;
 			this.fireCooldown = 0;
 			
 			// acceleration
-			this.acceleration = 0.095;
+			this.acceleration = 0.075;
 
 			//angle is random when firing second firetype
 			this.angleshift = Math.random() - 0.4
@@ -166,6 +172,7 @@ var Ship = Polygon.extend({
 				this.vel.y += this.acceleration * Math.sin(this.angle);
 			}
 			this.drawFlames = true;
+			this.fuel -= 0.01;
 		},
 
 		/**
@@ -192,8 +199,8 @@ var Ship = Polygon.extend({
 			this.x += this.vel.x;
 			this.y += this.vel.y;
 
-			this.vel.x *= 0.99;
-			this.vel.y *= 0.99;
+			this.vel.x *= 0.995;
+			this.vel.y *= 0.995;
 
 			//ship falls by its gravity and weight of carried object
 			if (this.visible) {

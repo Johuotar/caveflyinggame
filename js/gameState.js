@@ -77,6 +77,7 @@ var GameState = State.extend({
 			
 			this.ship.ammo = this.ship.maxammo;
 			this.ship.hp = this.ship.maxhp;
+			this.ship.fuel = this.ship.maxfuel;
 
 			// init bullet array
 			this.bullets = [];
@@ -151,7 +152,13 @@ var GameState = State.extend({
 			x = this.canvasWidth / 2;
 			y = this.canvasHeight / 2;
 			
-			// TODO: make more than 3 maps
+			// TODO: make more maps and proper win screen
+			/*
+			if (this.lvl => Points.MAPS.length - 1) {
+				this.gameOver = true;
+				console.log("player completed all levels")
+			}
+			*/
 			// actual creating of map
 			var map = new Wall(Points.MAPS[this.lvl], 20, x, y);
 			map.maxX = this.canvasWidth;
@@ -209,7 +216,7 @@ var GameState = State.extend({
 			if (input.isDown("left")) {
 				this.ship.rotate(-0.06);
 			}
-			if (input.isDown("up")) {
+			if (input.isDown("up") && this.ship.fuel > 0) {
 				this.ship.addVel();
 				this.soundWhoosh.play();
 			}
@@ -261,20 +268,22 @@ var GameState = State.extend({
 				console.log("Ship that was to be respawned does not exists anymore. Was the function called twice?");
 			}
 			
-			respawningShip.x = this.canvasWidth / 2;
-			respawningShip.y = this.canvasHeight / 2;
-			respawningShip.vel = {
-				x: 0,
-				y: 0
-			}
-			respawningShip.rotate(-Math.PI / 2);
-			this.ship.visible = true;
-			this.lives--;
-			this.ship.hp = this.ship.maxhp;
-			this.ship.ammo = 200;
 			if (this.lives <= 0) {
 				this.gameOver = true;
 				this.soundLose.play();
+			}
+			else {
+				respawningShip.x = this.canvasWidth / 2;
+				respawningShip.y = this.canvasHeight / 2;
+				respawningShip.vel = {
+					x: 0,
+					y: 0
+				}
+				respawningShip.rotate(-Math.PI / 2);
+				this.ship.visible = true;
+				this.lives--;
+				this.ship.hp = this.ship.maxhp;
+				this.ship.ammo = 200;
 			}
 		},
 
@@ -573,12 +582,12 @@ var GameState = State.extend({
 			
 			//Draw velocity and location for test purposes
 			ctx.strokeStyle = 'white';
-			ctx.strokeText(this.ship.vel.x, 10, 85);
-			ctx.strokeText(this.ship.vel.y, 10, 100);
-			ctx.strokeText(this.ship.x, 10, 115);
-			ctx.strokeText(this.ship.y, 10, 130);
+			ctx.strokeText(this.ship.vel.x, 10, 110);
+			ctx.strokeText(this.ship.vel.y, 10, 120);
+			ctx.strokeText(this.ship.x, 10, 130);
+			ctx.strokeText(this.ship.y, 10, 140);
 			
-			// draw UI: score, extra lives, hp, ammo and game over message
+			// draw UI: score, extra lives, hp, ammo, fuel and game over message
 			for (var i = 0; i < this.ship.hp; i++) {
 				if (i <= 10) {
 					ctx.strokeStyle = 'red';
@@ -604,6 +613,13 @@ var GameState = State.extend({
 			
 			for (var i = 0; i < this.ship.ammo; i++) {
 				ctx.drawPolygon(this.ammopolygon, 20 + 5 * i, 70);
+			}
+			
+			ctx.strokeStyle = 'brown';
+			
+			for (var i = 0; i < this.ship.fuel; i++) {
+				ctx.vectorText(Math.round(this.ship.fuel), 3, 30, 80);
+				
 			}
 			
 			if (this.gameOver) {
