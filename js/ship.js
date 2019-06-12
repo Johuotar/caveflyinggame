@@ -211,23 +211,6 @@ var Ship = Polygon.extend({
 					this.vel.y += this.gravity;
 				}
 			}
-
-			/*
-			// keep within sane bounds NOTE: IRRELEVANT AS OF 20.9.2018
-			if (this.x > this.maxX) {
-			this.x = this.maxX;
-			this.vel.x = 0;
-			} else if (this.x < 0) {
-			this.x = 0;
-			this.vel.x = 0;
-			}
-			if (this.y > this.maxY) {
-			this.y = this.maxY
-			this.vel.y = 0;
-			} else if (this.y < 0) {
-			this.y = 0;
-			this.vel.y = 0;
-			}*/
 		},
 
 		/**
