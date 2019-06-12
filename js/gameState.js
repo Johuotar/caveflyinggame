@@ -574,6 +574,7 @@ var GameState = State.extend({
 				this.containers[i].draw(ctx);
 			}
 			// draw all depots
+			ctx.strokeStyle = 'blue';
 			for (var i = 0, len = this.depots.length; i < len; i++) {
 				this.depots[i].draw(ctx);
 			}
@@ -618,8 +619,8 @@ var GameState = State.extend({
 			ctx.strokeStyle = 'brown';
 			
 			for (var i = 0; i < this.ship.fuel; i++) {
-				ctx.vectorText(Math.round(this.ship.fuel), 3, 30, 80);
-				
+				ctx.vectorText("fuel", 3, 30, 80);
+				ctx.vectorText(Math.round(this.ship.fuel), 3, 120, 80);
 			}
 			
 			if (this.gameOver) {

@@ -76,8 +76,8 @@ var MenuState = State.extend({
 			ctx.vectorText("johufly", 9, null, 140);
 			ctx.vectorText("press space to start", 2, null, 260);
 			ctx.vectorText("control your spaceship with arrowkeys", 2, null, 350);
-			ctx.vectorText("press space or shift to shoot", 2, null,400);
-			ctx.vectorText("use tractorbeam with control", 2, null, 450);
+			ctx.vectorText("use tractorbeam with spacebar", 2, null, 400);
+			ctx.vectorText("press control or shift to shoot", 2, null,450);
 			ctx.vectorText("find and bring the yellow container to your base", 2, null, 500);
 			
 		}
