@@ -58,9 +58,11 @@ var Ship = Polygon.extend({
 			// max fuel
 			this.maxfuel = 60.0;
 			
-			// tractorbeam
+			// tractorbeam lenght, status and end point
 			this.tractorbeamLength = 80;
 			this.carryingObject = false;
+			this.tractorbeamX
+			this.tractorbeamY
 
 			// gravity and weight of carried object
 			this.gravity = 0.015;
@@ -127,7 +129,7 @@ var Ship = Polygon.extend({
 					console.log("Tractor beam func beam returned false because testable object was null or ship was not visible.");
 					return false;
 				}
-				if (obj.hasPoint(this.x , this.y + this.tractorbeamLength)) {
+				if (obj.hasPoint(this.tractorbeamX, this.tractorbeamY)) {
 					return obj;
 				}
 			}
@@ -201,6 +203,15 @@ var Ship = Polygon.extend({
 			this.vel.x *= 0.995;
 			this.vel.y *= 0.995;
 
+			/*
+			//update tractorbeam position
+			var distance = Math.hypot(this.x-this.tractorbeamX, this.y-this.tractorbeamY)
+			if ( distance > this.tractorbeamLength){
+				console.log(distance)
+			}
+
+			*/
+
 			//ship falls by its gravity and weight of carried object
 			if (this.visible) {
 				if (this.carryingObject) {
@@ -222,16 +233,16 @@ var Ship = Polygon.extend({
 				return;
 			}
 			ctx.drawPolygon(this, this.x, this.y);
-			if (this.drawFlames) {
+			if (this.drawFlames) {//draw the flames if engine on
 				ctx.strokeStyle = 'red';
 				ctx.drawPolygon(this.flames, this.x, this.y);
 				this.drawFlames = false;
 			}
-			if (this.drawTractorbeam) {
+			if (this.drawTractorbeam) {//draw tractorbeam if on
 				ctx.strokeStyle = 'white';
 				ctx.beginPath();
 				ctx.moveTo(this.x, this.y);
-				ctx.lineTo(this.x, this.y + this.tractorbeamLength);
+				ctx.lineTo(this.tractorbeamX, this.tractorbeamY);
 				ctx.stroke();
 			}
 			

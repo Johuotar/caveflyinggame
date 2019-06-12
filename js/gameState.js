@@ -74,6 +74,10 @@ var GameState = State.extend({
 			this.ship.x = this.canvasWidth / 2;
 			this.ship.y = this.canvasHeight / 2;
 			this.ship.rotate(-Math.PI / 2);
+
+			//tractorbeam location
+			this.ship.tractorbeamX = this.ship.x
+			this.ship.tractorbeamY = this.ship.y + this.ship.tractorbeamLength
 			
 			this.ship.ammo = this.ship.maxammo;
 			this.ship.hp = this.ship.maxhp;
@@ -168,13 +172,14 @@ var GameState = State.extend({
 				return;
 			}
 			
-			if (input.isDown("spacebar")) {
-				this.ship.drawTractorbeam = true;
-				this.soundTractorbeam.play();
-			}
-			else{
-				this.ship.drawTractorbeam = false;
-				this.soundTractorbeam.pause();
+			if (input.isPressed("spacebar")){
+				if (this.ship.drawTractorbeam == false){
+					this.ship.drawTractorbeam = true;
+					this.soundTractorbeam.play();
+				} else {
+					this.ship.drawTractorbeam = false;
+					this.soundTractorbeam.pause();
+				}
 			}
 			if (input.isDown("right")) {
 				this.ship.rotate(0.06);
