@@ -603,8 +603,8 @@ var GameState = State.extend({
 			}
 			
 			ctx.strokeStyle = 'green';
-			
-			ctx.vectorText(this.score, 3, 120, 20);
+			ctx.vectorText("score", 3, 100, 20);
+			ctx.vectorText(this.score, 3, 230, 20);
 			
 			for (var i = 0; i < this.lives; i++) {
 				ctx.drawPolygon(this.lifepolygon, 20 + 15 * i, 35);
