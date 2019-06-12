@@ -94,9 +94,6 @@ var GameState = State.extend({
 			// dynamically create asteroids and push to array
 			this.asteroids = [];
 			
-			// calculate the number of walls to create
-			//var num2 = Math.round(10 * Math.atan(this.lvl / 25)) + 1;
-			
 			for (var i = 0; i < num; i++) {
 				// choose asteroid polygon randomly
 				var n = Math.round(Math.random() * (Points.ASTEROIDS.length - 1));
@@ -121,30 +118,6 @@ var GameState = State.extend({
 			
 			// create random walls dynamically and push to array
 			this.walls = [];
-			/*
-			for (var i = 0; i < num2; i++) {
-				// choose wall polygon randomly
-				var n = Math.round(Math.random() * (Points.WALL.length - 1));
-				
-				// set position close to edges of canvas
-				var x = 0,
-				y = 0;
-				if (Math.random() > 0.5) {
-					x = Math.random() * this.canvasWidth;
-					y = 80 * Math.random()
-				} else {
-					y = Math.random() * this.canvasHeight;
-					x = 80 * Math.random()
-				}
-				// actual creating of wall
-				var wall = new Wall(Points.WALL[n], 25, x, y);
-				wall.maxX = this.canvasWidth;
-				wall.maxY = this.canvasHeight;
-				console.log(n, x, y);
-				// push to array
-				this.walls.push(wall);
-			}
-			*/
 			// create the map border walls and push to the earlier wall array
 			var x = 0,
 			y = 0;
@@ -152,13 +125,6 @@ var GameState = State.extend({
 			x = this.canvasWidth / 2;
 			y = this.canvasHeight / 2;
 			
-			// TODO: make more maps and proper win screen
-			/*
-			if (this.lvl => Points.MAPS.length - 1) {
-				this.gameOver = true;
-				console.log("player completed all levels")
-			}
-			*/
 			// actual creating of map
 			var map = new Wall(Points.MAPS[this.lvl], 20, x, y);
 			map.maxX = this.canvasWidth;

@@ -28,9 +28,6 @@ var Container = Polygon.extend({
 			this.size = s;
 			this.scale(s);
 
-			// Set rotation angle used in each update
-			//this.rotAngle = 0.02 * (Math.random() * 2 - 1);
-
 			// starts with no velocity
 			this.vel = {
 				x: 0,
