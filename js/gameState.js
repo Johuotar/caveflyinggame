@@ -202,7 +202,7 @@ var GameState = State.extend({
 				return;
 			}
 			
-			if (input.isDown("control")) {
+			if (input.isDown("spacebar")) {
 				this.ship.drawTractorbeam = true;
 				this.soundTractorbeam.play();
 			}
@@ -227,7 +227,7 @@ var GameState = State.extend({
 				this.soundZap.play();
 			}
 
-			if (input.isDown("spacebar") && this.ship.fireCooldown >= this.ship.fireSpeed && this.ship.ammo > 0) {
+			if (input.isDown("control") && this.ship.fireCooldown >= this.ship.fireSpeed && this.ship.ammo > 0) {
 				this.bullets.push(this.ship.shoot());
 				this.ship.fireCooldown = 0;
 				this.soundZap.play();
@@ -241,8 +241,8 @@ var GameState = State.extend({
 		destroy: function (destroyedShip) {
 			
 			if (destroyedShip == null) {
-				return;
 				console.log("Ship that was to be destroyed does not exists anymore. Was the function called twice?");
+				return;
 			}
 			for (var i = 0; i < 6; i++) {
 				var n = Math.round(Math.random() * (Points.PART.length - 1));
@@ -264,8 +264,8 @@ var GameState = State.extend({
 		respawn: function (respawningShip) {
 			
 			if (respawningShip == null) {
-				return;
 				console.log("Ship that was to be respawned does not exists anymore. Was the function called twice?");
+				return;
 			}
 			
 			if (this.lives <= 0) {
@@ -342,8 +342,8 @@ var GameState = State.extend({
 					var b = this.bullets[j];
 
 					if (a == null) {
-						return;
 						console.log("bullet asteroid hit check, target was null, skipped");
+						return;
 					}
 					if (a.hasPoint(b.x, b.y)) {
 						this.bullets.splice(j, 1);
@@ -474,8 +474,8 @@ var GameState = State.extend({
 					var b = this.bullets[j];
 
 					if (a == null) {
-						return;
 						console.log("bullet wall hit check, target was null, skipped");
+						return;
 					}
 					if (a.hasPoint(b.x, b.y)) {
 						this.bullets.splice(j, 1);
@@ -489,8 +489,8 @@ var GameState = State.extend({
 					var c = this.asteroids[j];
 
 					if (c == null || a == null) {
-						return;
 						console.log("asteroid wall hit check, either one was null, skipped");
+						return;
 					}
 					if (a.hasPoint(c.x, c.y)) {// TODO: Asteroids should bounce off in right angle
 						c.vel = {
@@ -510,8 +510,8 @@ var GameState = State.extend({
 					var p = this.parts[j];
 
 					if (p == null || a == null) {
-						return;
 						console.log("part wall hit check, target was null, skipped");
+						return;
 					}
 					if (a.hasPoint(p.x, p.y)) { //either set for removal at next crash or remove if true
 						if ( p.hasCrashed == false){
