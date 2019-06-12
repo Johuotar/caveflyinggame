@@ -100,8 +100,8 @@ var Ship = Polygon.extend({
 			}
 			// don't test if the object no longer exists, bullet destroyed it etc
 			if (astr == null) {
+				console.log("ship collide function target was null, return false");
 				return false;
-				console.log("collide function target was null, return false");
 			}
 			for (var i = 0, len = this.points.length - 2; i < len; i += 2) {
 				var x = this.points[i] + this.x;
@@ -164,9 +164,8 @@ var Ship = Polygon.extend({
 		 * direction
 		 */
 		addVel: function () {
-			// length of veloctity vector estimated with pythagoras
-			// theorem, i.e.
-			// 		a*a + b*b = c*c
+			// length of velocity vector estimated with pythagoras
+			// theorem, i.e. a*a + b*b = c*c
 			if (this.vel.x * this.vel.x + this.vel.y * this.vel.y < 20 * 20) {
 				this.vel.x += this.acceleration * Math.cos(this.angle);
 				this.vel.y += this.acceleration * Math.sin(this.angle);
