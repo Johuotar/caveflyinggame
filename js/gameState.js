@@ -26,6 +26,9 @@ var GameState = State.extend({
 			this.ship.maxX = this.canvasWidth;
 			this.ship.maxY = this.canvasHeight;
 
+			this.ship.tractorbeamX = this.ship.x
+			this.ship.tractorbeamY = this.ship.y + 15
+
 			// score and lives variables
 			this.lives = 3;
 

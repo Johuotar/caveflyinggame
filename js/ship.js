@@ -61,14 +61,14 @@ var Ship = Polygon.extend({
 			// tractorbeam lenght, status and end point
 			this.tractorbeamLength = 80;
 			this.carryingObject = false;
-			this.tractorbeamX
-			this.tractorbeamY
+			this.tractorbeamX;
+			this.tractorbeamY;
 			this.tractorbeamVel = {
 				x: 0,
 				y: 0
 			}
-			this.tractorbeamAcceleration = 2
-			this.tractorbeamGravity = 0.015
+			this.tractorbeamAcceleration = 1
+			this.tractorbeamGravity = 0.0075
 
 			// gravity and weight of carried object
 			this.gravity = 0.015;
@@ -209,35 +209,6 @@ var Ship = Polygon.extend({
 			this.vel.x *= 0.995;
 			this.vel.y *= 0.995;
 
-			//update tractorbeam position, firstly keep the beam close to the ship
-			var distance = Math.hypot(this.x-this.tractorbeamX, this.y-this.tractorbeamY)
-			if ( distance > this.tractorbeamLength){
-				dx = this.x - this.tractorbeamX;
-				dy = this.y - this.tractorbeamY;
-				angle = Math.atan2(dy, dx)
-
-				var distanceMultiplier = distance / (this.tractorbeamLength)
-				if (distanceMultiplier < 1.0){
-					distanceMultiplier = 0.0
-				}
-				if (distanceMultiplier > 3.0) {
-					distanceMultiplier = 3.0
-				}
-				else {
-				this.tractorbeamVel.x = this.tractorbeamAcceleration * distanceMultiplier * Math.cos(angle);
-				this.tractorbeamVel.y = this.tractorbeamAcceleration * distanceMultiplier * Math.sin(angle);
-				}
-				
-			}
-			this.tractorbeamVel.x *= 0.995;
-			this.tractorbeamVel.y *= 0.995;
-			//apply gravity to tractorbeam
-			this.tractorbeamVel.y += this.tractorbeamGravity
-			//apply velocity to tractorbeam
-			this.tractorbeamX += this.tractorbeamVel.x
-			this.tractorbeamY += this.tractorbeamVel.y
-			console.log(distanceMultiplier)
-
 			//ship falls by its gravity and weight of carried object
 			if (this.visible) {
 				if (this.carryingObject) {
@@ -247,8 +218,20 @@ var Ship = Polygon.extend({
 					this.vel.y += this.gravity;
 				}
 			}
-		},
+			
+			
+			dx = this.tractorbeamX - this.x
+			dy = this.tractorbeamY - this.y
+			var distance = Math.sqrt(dx * dx + dy * dy);
+			console.log(dx, dy)
+			if (distance > this.tractorbeamLength){
+				var dxl = dx * this.tractorbeamLength / distance
+				var dyl = dy * this.tractorbeamLength / distance
+				this.tractorbeamX = dxl
+				this.tractorbeamY = dyl
+			}
 
+		},
 		/**
 		 * Draw the ship with an augmented drawing context
 		 *
