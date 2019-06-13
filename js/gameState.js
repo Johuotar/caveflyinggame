@@ -219,7 +219,7 @@ var GameState = State.extend({
 				var n = Math.round(Math.random() * (Points.PART.length - 1));
 				var p = new Part(Points.PART[n], 3 ,destroyedShip.x, destroyedShip.y, destroyedShip.vel.x, destroyedShip.vel.y);
 				this.parts.push(p);
-				console.log("parts should have spawned by now to location x.y");
+				//console.log("parts should have spawned by now to location x.y");
 				console.log(p.x, p.y)
 				p.maxX = this.maxX;
 				p.maxY = this.maxY;
