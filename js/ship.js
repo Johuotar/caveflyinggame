@@ -63,6 +63,10 @@ var Ship = Polygon.extend({
 			this.carryingObject = false;
 			this.tractorbeamX
 			this.tractorbeamY
+			this.tractorbeamVel = {
+				x: 0,
+				y: 0
+			}
 
 			// gravity and weight of carried object
 			this.gravity = 0.015;
@@ -203,15 +207,18 @@ var Ship = Polygon.extend({
 			this.vel.x *= 0.995;
 			this.vel.y *= 0.995;
 
-			/*
 			//update tractorbeam position
 			var distance = Math.hypot(this.x-this.tractorbeamX, this.y-this.tractorbeamY)
 			if ( distance > this.tractorbeamLength){
-				console.log(distance)
+				console.log("distance too long: " + distance)
+				dx = this.x - this.tractorbeamX;
+				dy = this.y - this.tractorbeamY;
+				angle = Math.atan2(dy, dx)
+				this.tractorbeamVel.x = 5 * Math.cos(angle);
+				this.tractorbeamVel.y = 5 * Math.sin(angle);
+				this.tractorbeamX += this.tractorbeamVel.x
+				this.tractorbeamY += this.tractorbeamVel.y
 			}
-
-			*/
-
 			//ship falls by its gravity and weight of carried object
 			if (this.visible) {
 				if (this.carryingObject) {
