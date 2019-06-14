@@ -63,7 +63,7 @@ var Ship = Polygon.extend({
 			this.carryingObject = false;
 			this.tractorbeamX;
 			this.tractorbeamY;
-			this.tractorbeamGravity = 0.5
+			this.tractorbeamGravity = 4
 
 			// gravity and weight of carried object
 			this.gravity = 0.015;
@@ -220,19 +220,25 @@ var Ship = Polygon.extend({
 			var distance = Math.sqrt(dx * dx + dy * dy);
 			console.log(distance)
 			if (distance > this.tractorbeamLength){
-				var dxl = dx * this.tractorbeamLength / distance
-				var dyl = dy * this.tractorbeamLength / distance
-				if (distance > this.tractorbeamLength * 1.5){
-					this.tractorbeamX -= dxl / 2
-					this.tractorbeamY -= dyl / 2
-				}
-				else{
-					this.tractorbeamX -= dxl / 10
-					this.tractorbeamY -= dyl / 10
-				}
+				var dxl = dx * ( 1 - this.tractorbeamLength / distance )
+				var dyl = dy * ( 1 - this.tractorbeamLength / distance )
+				this.tractorbeamX -= dxl
+				this.tractorbeamY -= dyl
 			}
-			this.tractorbeamY += this.tractorbeamGravity
-
+			//Apply gravity to tractorbeam
+			if (this.carryingObject) {
+				this.tractorbeamY += this.tractorbeamGravity + this.weight;
+			}
+			else {
+				this.tractorbeamY += this.tractorbeamGravity
+			}
+			//gradually move tractorbeam directly below the ship //DOES NOT SEEM USEFUL
+			/*if (this.x < this.tractorbeamX && distance > this.tractorbeamLength * 0.9){
+				this.tractorbeamX -= 0.5
+			}
+			else {
+				this.tractobeamX += 0.5
+			}*/
 		},
 		/**
 		 * Draw the ship with an augmented drawing context
