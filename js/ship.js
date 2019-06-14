@@ -53,13 +53,16 @@ var Ship = Polygon.extend({
 			this.maxhp = 50;
 			
 			// fuel
-			this.fuel = 60.0;
+			this.fuel = 40.0;
 
 			// max fuel
-			this.maxfuel = 60.0;
+			this.maxfuel = 40.0;
+
+			// max velocity
+			this.maxvel = 5.5;
 			
 			// tractorbeam lenght, status and end point
-			this.tractorbeamLength = 80;
+			this.tractorbeamLength = 75;
 			this.carryingObject = false;
 			this.tractorbeamX;
 			this.tractorbeamY;
@@ -74,7 +77,7 @@ var Ship = Polygon.extend({
 			this.fireCooldown = 0;
 			
 			// acceleration
-			this.acceleration = 0.075;
+			this.acceleration = 0.05;
 
 			//angle is random when firing second firetype
 			this.angleshift = Math.random() - 0.4
@@ -172,6 +175,19 @@ var Ship = Polygon.extend({
 			if (this.vel.x * this.vel.x + this.vel.y * this.vel.y < 20 * 20) {
 				this.vel.x += this.acceleration * Math.cos(this.angle);
 				this.vel.y += this.acceleration * Math.sin(this.angle);
+				//Limit the max speed
+				if(this.vel.x > this.maxvel){
+					this.vel.x = this.maxvel
+				}
+				else if(this.vel.x < -this.maxvel){
+					this.vel.x = -this.maxvel
+				}
+				if(this.vel.y > this.maxvel){
+					this.vel.y = this.maxvel
+				}
+				else if(this.vel.y < -this.maxvel){
+					this.vel.y = -this.maxvel
+				}
 			}
 			this.drawFlames = true;
 			this.fuel -= 0.01;
@@ -214,11 +230,9 @@ var Ship = Polygon.extend({
 				}
 			}
 			
-			
 			dx = this.tractorbeamX - this.x
 			dy = this.tractorbeamY - this.y
 			var distance = Math.sqrt(dx * dx + dy * dy);
-			console.log(distance)
 			if (distance > this.tractorbeamLength){
 				var dxl = dx * ( 1 - this.tractorbeamLength / distance )
 				var dyl = dy * ( 1 - this.tractorbeamLength / distance )
@@ -232,13 +246,6 @@ var Ship = Polygon.extend({
 			else {
 				this.tractorbeamY += this.tractorbeamGravity
 			}
-			//gradually move tractorbeam directly below the ship //DOES NOT SEEM USEFUL
-			/*if (this.x < this.tractorbeamX && distance > this.tractorbeamLength * 0.9){
-				this.tractorbeamX -= 0.5
-			}
-			else {
-				this.tractobeamX += 0.5
-			}*/
 		},
 		/**
 		 * Draw the ship with an augmented drawing context

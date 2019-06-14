@@ -257,7 +257,8 @@ var GameState = State.extend({
 				this.ship.visible = true;
 				this.lives--;
 				this.ship.hp = this.ship.maxhp;
-				this.ship.ammo = 200;
+				this.ship.fuel = this.ship.maxfuel;
+				this.ship.ammo = this.ship.maxammo;
 			}
 		},
 
@@ -280,6 +281,10 @@ var GameState = State.extend({
 						this.ship.hp = this.ship.maxhp;
 						this.soundRestored.play();
 					}
+					if (this.ship.fuel + 0.5 < this.ship.maxfuel) {
+						this.ship.fuel = this.ship.maxfuel;
+						this.soundRestored.play();
+					}
 				}
 				// if tractorbeam collides with container
 				if (this.ship.tractorbeam(a) && this.ship.drawTractorbeam == true) {
@@ -298,11 +303,43 @@ var GameState = State.extend({
 
 				// if ship collides to asteroid
 				if (this.ship.collide(a)) {
-					this.ship.hp--;
-					this.soundHploss.play();
-					if (this.ship.hp <= 0) {
-						this.destroy(this.ship);
+					//determine angle from ast to ship
+					var angleTo = Math.atan2(this.ship.y - a.y, this.ship.x - a.x);
+					//vel towards angle ship
+					this.ship.vel.x = (this.ship.vel.x + a.vel.x) * Math.cos(angleTo);
+					this.ship.vel.y = (this.ship.vel.y + a.vel.y) * Math.sin(angleTo);
+					//determine angle from ship to ast
+					var angleTo = Math.atan2(a.y - this.ship.y, a.x - this.ship.x);
+					//vel towards angle asteroid
+					a.vel.x = a.vel.x * Math.cos(angleTo);
+					a.vel.y = a.vel.y * Math.sin(angleTo);
+
+					var speed = Math.abs(this.ship.vel.x) + Math.abs(this.ship.vel.y);
+					if (speed > 1.0) {
+						this.ship.hp -= speed * 3;
+						this.soundHploss.play();
+						this.soundCrash.play();
+						if (this.ship.hp <= 0) {
+							this.destroy(this.ship);
+						}
 					}
+					// if asteroid splitted twice, then remove
+					// else split in half
+					if (a.size > AsteroidSize / 4) {
+						for (var k = 0; k < 2; k++) {
+							var n = Math.round(Math.random() * (Points.ASTEROIDS.length - 1));
+
+							var astr = new Asteroid(Points.ASTEROIDS[n], a.size / 2, a.x, a.y);
+							astr.maxX = this.canvasWidth;
+							astr.maxY = this.canvasHeight;
+
+							this.asteroids.push(astr);
+							len++;
+						}
+					}
+					this.asteroids.splice(i, 1);
+					len--;
+					i--;
 				}
 				// if tractorbeam collides with asteroid
 				if (this.ship.tractorbeam(a) && this.ship.drawTractorbeam == true && this.ship.carryingObject == false) {
@@ -416,7 +453,7 @@ var GameState = State.extend({
 				if (this.ship.collide(a)) {
 					var speed = Math.abs(this.ship.vel.x) + Math.abs(this.ship.vel.y);
 					if (speed > 1.0) {
-						this.ship.hp -= speed * 2;
+						this.ship.hp -= speed * 3;
 						this.soundCrash.play();
 						if (this.ship.hp <= 0) {
 							this.destroy(this.ship);
